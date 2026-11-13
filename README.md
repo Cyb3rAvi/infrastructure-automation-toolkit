@@ -2,7 +2,7 @@
 
 PowerShell scripts for day-to-day Microsoft 365 and infrastructure administration: devices and compliance (Intune, Entra ID), mail (Exchange Online), identity reviews (Okta, Business Central), service desk (Freshservice), monitoring and backup status. They come from real enterprise work (400+ endpoints) and have been cleaned of company-specific values.
 
-**Before you run anything:** these are examples to read, adapt and test, not tools to point at production. Fill in the placeholders, try them on a test tenant or a small group first, and read the "What it changes" column below.
+**Before you run anything:** these are examples to read, adapt and test, not tools to point at production. Some scripts were drafted with an AI coding assistant; I reviewed and edited them, but treat every script as an example and test it before use. Fill in the placeholders, try them on a test tenant or a small group first, and read the "What it changes" column below.
 
 ## What it changes
 
