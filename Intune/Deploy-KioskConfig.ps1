@@ -3,11 +3,13 @@
     Configures iOS kiosk mode with web content filtering via Intune Graph API.
 
 .DESCRIPTION
-    Creates or updates an Intune device configuration profile for supervised iOS
-    devices. Sets up single-app kiosk mode or web content filtering (specificWebsitesOnly)
-    for controlled browsing environments.
+    Creates a NEW Intune device configuration profile for supervised iOS devices
+    (web content filtering, specificWebsitesOnly) and assigns it to a group. It does
+    not update an existing profile: running it twice creates two profiles.
 
     Requires supervised devices enrolled via Apple Business Manager (ABM/DEP).
+    Uses the Graph beta endpoint, so check the profile in the Intune portal after
+    running it and test on a small pilot group first.
 
 .PARAMETER ProfileName
     Name for the configuration profile.
@@ -17,6 +19,9 @@
 
 .PARAMETER GroupId
     Entra ID group to assign the profile to.
+
+.PARAMETER DryRun
+    Show the profile that would be created and stop. Nothing is created or assigned.
 
 .EXAMPLE
     .\Deploy-KioskConfig.ps1 -ProfileName "Kiosk - Sales Registration" -AllowedUrls @("https://app.example.com") -GroupId "YOUR_GROUP_ID"
@@ -30,7 +35,9 @@ param(
     [string[]]$AllowedUrls,
 
     [Parameter(Mandatory)]
-    [string]$GroupId
+    [string]$GroupId,
+
+    [switch]$DryRun
 )
 
 # --- Auth ---
@@ -59,6 +66,12 @@ $profileBody = @{
         websiteList            = $bookmarks
     }
 } | ConvertTo-Json -Depth 10
+
+if ($DryRun) {
+    Write-Host "DRY RUN - would create this profile and assign it to group $GroupId (nothing sent):" -ForegroundColor Yellow
+    $profileBody
+    return
+}
 
 try {
     $profile = Invoke-RestMethod -Uri "https://graph.microsoft.com/beta/deviceManagement/deviceConfigurations" `

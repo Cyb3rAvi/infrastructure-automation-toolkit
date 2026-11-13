@@ -1,0 +1,15 @@
+# Never commit secrets, tokens or real output
+*.pfx
+*.pem
+*.key
+*.env
+.env*
+.graph-token-cache.json
+*token*cache*.json
+
+# Report output the scripts produce (can contain real device / user data)
+*.xlsx
+*.csv
+*.log
+output/
+reports/

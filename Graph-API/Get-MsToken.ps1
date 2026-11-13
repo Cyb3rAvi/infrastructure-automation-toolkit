@@ -22,10 +22,13 @@ param(
     [string]$Service
 )
 
-# --- Configuration (update these) ---
-$tenantId     = "YOUR_TENANT_ID"
-$clientId     = "YOUR_CLIENT_ID"
-$clientSecret = "YOUR_CLIENT_SECRET"
+# --- Configuration ---
+# Prefer environment variables (or a secret store) over editing secrets into this file.
+# The placeholders below only apply when the variable is not set.
+$tenantId     = if ($env:GRAPH_TENANT_ID)     { $env:GRAPH_TENANT_ID }     else { "YOUR_TENANT_ID" }
+$clientId     = if ($env:GRAPH_CLIENT_ID)     { $env:GRAPH_CLIENT_ID }     else { "YOUR_CLIENT_ID" }
+$clientSecret = if ($env:GRAPH_CLIENT_SECRET) { $env:GRAPH_CLIENT_SECRET } else { "YOUR_CLIENT_SECRET" }
+# The cache holds live access tokens in plain text: keep it in your user profile, never in a repo.
 $cachePath    = "$env:USERPROFILE\.graph-token-cache.json"
 
 # Service-specific resource URIs

@@ -13,7 +13,14 @@
 .PARAMETER EntraOnly
     If specified, only removes from Entra ID (skips Intune).
 
+.PARAMETER DryRun
+    List what would be removed without deleting anything. Run this first.
+
 .NOTES
+    - DESTRUCTIVE: deletes EVERY device whose name matches exactly. If two devices
+      share a hostname, both are removed. Use -DryRun first.
+    - Needs Graph application permissions to delete devices (Intune managed devices
+      and Entra devices); grant the least that covers your use.
     - Runs under SYSTEM account on Jenkins server
     - Uses certificate thumbprint for authentication (no client secret)
     - Designed for PowerShell 5.1 compatibility (Jenkins default)
@@ -23,7 +30,9 @@ param(
     [Parameter(Mandatory)]
     [string]$DeviceName,
 
-    [switch]$EntraOnly
+    [switch]$EntraOnly,
+
+    [switch]$DryRun
 )
 
 # --- Configuration (update these) ---
@@ -88,14 +97,17 @@ $headers = @{
     "Content-Type" = "application/json"
 }
 
+$encoded = [System.Uri]::EscapeDataString($DeviceName)   # used by BOTH searches (it was only set in the Intune branch before)
+if ($DryRun) { Write-Host "DRY RUN - nothing will be deleted." -ForegroundColor Yellow }
+
 # --- Find Device in Intune ---
 if (-not $EntraOnly) {
     Write-Host "Searching Intune for '$DeviceName'..." -ForegroundColor Cyan
-    $encoded = [System.Uri]::EscapeDataString($DeviceName)
     $intuneResult = Invoke-RestMethod -Uri "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices?`$filter=deviceName eq '$encoded'" -Headers $headers
 
     if ($intuneResult.value.Count -gt 0) {
         foreach ($device in $intuneResult.value) {
+            if ($DryRun) { Write-Host "[DRY RUN] Would remove from Intune: $($device.deviceName) (ID: $($device.id))" -ForegroundColor Yellow; continue }
             Write-Host "Removing from Intune: $($device.deviceName) (ID: $($device.id))" -ForegroundColor Yellow
             Invoke-RestMethod -Uri "https://graph.microsoft.com/v1.0/deviceManagement/managedDevices/$($device.id)" -Headers $headers -Method DELETE
             Write-Host "Removed from Intune." -ForegroundColor Green
@@ -112,6 +124,7 @@ $entraResult = Invoke-RestMethod -Uri "https://graph.microsoft.com/v1.0/devices?
 
 if ($entraResult.value.Count -gt 0) {
     foreach ($device in $entraResult.value) {
+        if ($DryRun) { Write-Host "[DRY RUN] Would remove from Entra ID: $($device.displayName) (ID: $($device.id))" -ForegroundColor Yellow; continue }
         Write-Host "Removing from Entra ID: $($device.displayName) (ID: $($device.id))" -ForegroundColor Yellow
         Invoke-RestMethod -Uri "https://graph.microsoft.com/v1.0/devices/$($device.id)" -Headers $headers -Method DELETE
         Write-Host "Removed from Entra ID." -ForegroundColor Green

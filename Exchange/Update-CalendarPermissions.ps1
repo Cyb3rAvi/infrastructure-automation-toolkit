@@ -18,6 +18,10 @@
 .PARAMETER AccessLevel
     Permission level for Add action. Default: Reviewer
 
+.PARAMETER DryRun
+    For Add and Remove: show what would change without changing it. Remove has no
+    confirmation prompt, so use this first.
+
 .EXAMPLE
     .\Update-CalendarPermissions.ps1 -Mailbox "user@domain.com" -Action List
 
@@ -35,7 +39,9 @@ param(
     [string]$Action = "List",
 
     [ValidateSet("Reviewer", "Editor", "Author", "Owner", "PublishingEditor")]
-    [string]$AccessLevel = "Reviewer"
+    [string]$AccessLevel = "Reviewer",
+
+    [switch]$DryRun
 )
 
 # --- Connect ---
@@ -65,7 +71,11 @@ switch ($Action) {
         $existing = Get-MailboxFolderPermission -Identity $calendarPath -ErrorAction SilentlyContinue |
             Where-Object { $_.User.DisplayName -eq $Delegate -or $_.User.ADRecipient.PrimarySmtpAddress -eq $Delegate }
 
-        if ($existing) {
+        if ($DryRun) {
+            $what = if ($existing) { "update $Delegate to $AccessLevel" } else { "add $Delegate as $AccessLevel" }
+            Write-Host "[DRY RUN] Would $what on $Mailbox calendar. Nothing changed." -ForegroundColor Yellow
+        }
+        elseif ($existing) {
             Write-Host "Updating existing permission for $Delegate to $AccessLevel..." -ForegroundColor Yellow
             Set-MailboxFolderPermission -Identity $calendarPath -User $Delegate -AccessRights $AccessLevel
         }
@@ -73,7 +83,7 @@ switch ($Action) {
             Write-Host "Adding $Delegate as $AccessLevel on $Mailbox calendar..." -ForegroundColor Yellow
             Add-MailboxFolderPermission -Identity $calendarPath -User $Delegate -AccessRights $AccessLevel
         }
-        Write-Host "Done." -ForegroundColor Green
+        if (-not $DryRun) { Write-Host "Done." -ForegroundColor Green }
     }
 
     "Remove" {
@@ -82,6 +92,10 @@ switch ($Action) {
             exit 1
         }
 
+        if ($DryRun) {
+            Write-Host "[DRY RUN] Would remove $Delegate from $Mailbox calendar. Nothing changed." -ForegroundColor Yellow
+            break
+        }
         Write-Host "Removing $Delegate from $Mailbox calendar..." -ForegroundColor Yellow
         try {
             Remove-MailboxFolderPermission -Identity $calendarPath -User $Delegate -Confirm:$false
