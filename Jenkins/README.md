@@ -4,9 +4,9 @@ Jobs and scripts for running admin tasks unattended or from a form through Jenki
 
 ## The problem it solves
 
-When a laptop is retired its Intune and Entra ID records usually linger. Doing that by hand is easy to forget. This script lets a Jenkins job remove a device by hostname with no one signed in.
+Routine admin tasks (retire a device, renew a certificate, grant mailbox access, check onboarding) are easy to forget and need elevated rights. Running them as Jenkins jobs gives them a form, validation, a certificate sign-in and a record of every run. The first example below is the simplest: removing a device by hostname with no one signed in.
 
-## How it works
+## How the simplest one works (`Remove-IntuneDevice.ps1`)
 
 ```mermaid
 flowchart LR
