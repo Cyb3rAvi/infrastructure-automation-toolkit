@@ -15,6 +15,7 @@ Every script is listed with what it can do to your environment, so you know whic
 | Graph-API | `Get-MsToken.ps1` | Gets and caches an access token for Graph, Exchange, SharePoint or Azure. Changes nothing in the tenant; writes a local token cache file in your user profile. |
 | Intune | `Get-DeviceReport.ps1` | Device details, encryption status and recovery keys. |
 | Intune | `Get-BitLockerReport.ps1` | BitLocker compliance by rollout phase, from a list of devices. |
+| Intune | `HP-Driver-Update-Loop/Detect-HpDriverUpdateLoop.ps1` | Survey (Intune detection-only remediation) of the HP printer driver Windows Update loop. Reads only; prints one verdict line per device. |
 | Intune | `Get-DeviceReadiness.ps1` | Checks Secure Boot, virtualization, UEFI and disk, to see which devices are ready for a change. |
 | Entra-ID | `Get-StaleDevices.ps1` | Compares Entra and Intune to find stale and orphaned devices. |
 | Entra-ID | `Get-DeviceInventory.ps1` | Full inventory of hybrid-joined devices. |
@@ -35,13 +36,14 @@ Every script is listed with what it can do to your environment, so you know whic
 | Exchange | `Update-CalendarPermissions.ps1` | Adds, changes or removes calendar delegates (`List` is read-only) | `-DryRun` for Add and Remove (no confirmation prompt) |
 | Intune | `Deploy-KioskConfig.ps1` | **Creates** an iOS web-filter profile and assigns it to a group (a new profile every run) | `-DryRun` |
 | Freshservice | `Add-TicketNote.ps1` | Posts a note on a ticket: private by default, visible to the requester only with `-Public` | none: you cannot undo a posted note |
+| Intune | `HP-Driver-Update-Loop/Remediate-HpLoopUpdatesHide.ps1` | Hides the looping HP driver updates in Windows Update (with its detection script `Detect-HpLoopUpdatesVisible.ps1`). No driver, policy or registry change; reversible | none needed: only hides updates, run through Intune as SYSTEM |
 | Browser-Policy | `Set-BrowserHomepage.ps1` | Writes Edge and Chrome homepage policy to HKLM (an Intune remediation script) | none: it is meant to run as SYSTEM through Intune |
 
 ## Folders
 
 ```
 Graph-API/        Microsoft Graph authentication with token caching
-Intune/           Device reporting, BitLocker compliance, readiness, kiosk config, stale cleanup
+Intune/           Device reporting, BitLocker compliance, readiness, kiosk config, stale cleanup, HP driver update loop fix
 Entra-ID/         Stale device detection, hybrid device inventory
 Exchange/         Mailbox reporting, calendar permissions, distribution lists
 Okta/             User access reporting
