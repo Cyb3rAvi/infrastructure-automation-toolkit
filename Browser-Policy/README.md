@@ -22,11 +22,12 @@ The script writes the homepage and new-tab policy under `HKLM\SOFTWARE\Policies`
 
 | Script | What it does | Changes anything? |
 |--------|--------------|-------------------|
+| `Detect-BrowserHomepage.ps1` | 🔍 Detection script. Exits 1 if the Edge or Chrome policy is missing or wrong, so Intune runs the fix. | No, read-only |
 | `Set-BrowserHomepage.ps1` | ✏️ Remediation script. Writes the Edge and Chrome homepage policy to HKLM. | **Writes to the registry.** No dry-run. It's meant to run as SYSTEM through Intune. |
 
 ## Setup in Intune
 
-Devices > Scripts and remediations > Create. The script is the **remediation** half of the pair. A remediation needs a detection script, which isn't included here. Write one that exits 1 when the policy values are missing or wrong and 0 when they're correct. Run as SYSTEM, 64-bit.
+Devices > Scripts and remediations > Create. Upload `Detect-BrowserHomepage.ps1` as the detection script and `Set-BrowserHomepage.ps1` as the remediation script. Keep the two URLs identical in both files. Run as SYSTEM, 64-bit.
 
 ## Good to know
 

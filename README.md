@@ -37,6 +37,7 @@ Every script is listed with what it can do to your environment, so you know whic
 | Intune | `Deploy-KioskConfig.ps1` | **Creates** an iOS web-filter profile and assigns it to a group (a new profile every run) | `-DryRun` |
 | Freshservice | `Add-TicketNote.ps1` | Posts a note on a ticket: private by default, visible to the requester only with `-Public` | none: you cannot undo a posted note |
 | Intune | `HP-Driver-Update-Loop/Remediate-HpLoopUpdatesHide.ps1` | Hides the looping HP driver updates in Windows Update (with its detection script `Detect-HpLoopUpdatesVisible.ps1`). No driver, policy or registry change; reversible | none needed: only hides updates, run through Intune as SYSTEM |
+| Browser-Policy | `Detect-BrowserHomepage.ps1` | Reads the Edge and Chrome homepage policy and reports whether it matches (the detection half of the pair) | not needed: read-only |
 | Browser-Policy | `Set-BrowserHomepage.ps1` | Writes Edge and Chrome homepage policy to HKLM (an Intune remediation script) | none: it is meant to run as SYSTEM through Intune |
 
 ## Folders
@@ -53,7 +54,7 @@ Each folder has its own README with the problem it solves, how it works, a quick
 | [Freshservice](Freshservice) | Ticket details and notes |
 | [Business-Central](Business-Central) | Permission audit with elevated-access flagging |
 | [Monitoring](Monitoring) | Service health, backup status |
-| [Browser-Policy](Browser-Policy) | Browser homepage enforcement (Intune remediation) |
+| [Browser-Policy](Browser-Policy) | Browser homepage enforcement (Intune detection and remediation pair) |
 | [Jenkins](Jenkins) | Unattended, certificate-based device cleanup |
 
 ## Requirements
