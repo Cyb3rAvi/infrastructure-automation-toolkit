@@ -25,6 +25,7 @@ Every script is listed with what it can do to your environment, so you know whic
 | Business-Central | `Build-BCAccessReport.ps1` | User permission audit that flags elevated access. |
 | Monitoring | `Test-ServiceHealth.ps1` | Web, TCP and Windows service health checks. |
 | Monitoring | `Get-BackupStatus.ps1` | Veeam and Azure Backup status in one view. |
+| Jenkins | `Device-Onboarding-Check/Get-DeviceOnboardingReport.ps1` | Weekly report of new devices missing a deployment group or not encrypted. Writes a local PDF and CSV and sends an email; no tenant changes. |
 
 ### Changes something (read the notes first)
 
@@ -32,6 +33,9 @@ Every script is listed with what it can do to your environment, so you know whic
 |--------|--------|-----------------|-----------------|
 | Intune | `Remove-StaleDevices.ps1` | **Deletes** stale devices from Entra and Intune | `-DryRun` and a yes/no confirmation |
 | Jenkins | `Remove-IntuneDevice.ps1` | **Deletes** every device matching a hostname from Intune and Entra | `-DryRun` (no confirmation: it is built to run unattended) |
+| Jenkins | `AFD-Auto-Revalidation/Invoke-AfdAutoRevalidation.ps1` | **Writes a DNS TXT record** and refreshes a Front Door validation token to renew certificates | `-DryRun`, allow-list |
+| Jenkins | `Remove-Device-By-Device-Id/Remove-DeviceByDeviceId.ps1` | **Deletes** devices from Intune and/or Entra by Device ID | input validation, ticket number required |
+| Jenkins | `Shared-Mailbox-Permissions/Update-SharedMailboxPermissions.ps1` | Adds or removes FullAccess and SendAs on shared mailboxes | refuses non-shared mailboxes |
 | Exchange | `Update-DistributionList.ps1` | Adds or removes distribution list members from a CSV | `-DryRun` (no confirmation prompt) |
 | Exchange | `Update-CalendarPermissions.ps1` | Adds, changes or removes calendar delegates (`List` is read-only) | `-DryRun` for Add and Remove (no confirmation prompt) |
 | Intune | `Deploy-KioskConfig.ps1` | **Creates** an iOS web-filter profile and assigns it to a group (a new profile every run) | `-DryRun` |
@@ -55,7 +59,7 @@ Each folder has its own README with the problem it solves, how it works, a quick
 | [Business-Central](Business-Central) | Permission audit with elevated-access flagging |
 | [Monitoring](Monitoring) | Service health, backup status |
 | [Browser-Policy](Browser-Policy) | Browser homepage enforcement (Intune detection and remediation pair) |
-| [Jenkins](Jenkins) | Unattended, certificate-based device cleanup |
+| [Jenkins](Jenkins) | Certificate-based Jenkins jobs: device cleanup, certificate renewal, shared mailbox permissions, onboarding report |
 
 ## Requirements
 

@@ -1,6 +1,6 @@
 # Jenkins
 
-Unattended, certificate-based device cleanup that a Jenkins job can run.
+Jobs and scripts for running admin tasks unattended or from a form through Jenkins, signing in with a certificate instead of a password.
 
 ## The problem it solves
 
@@ -26,6 +26,10 @@ flowchart LR
 | Script | What it does | Changes anything? |
 |--------|--------------|-------------------|
 | `Remove-IntuneDevice.ps1` | ✏️ Removes a device from Intune and Entra ID by hostname. `-EntraOnly` skips Intune. | **Deletes every device with that name.** `-DryRun`. No confirmation prompt, because it runs unattended. |
+| [`AFD-Auto-Revalidation/`](AFD-Auto-Revalidation) | ✏️ Renews Azure Front Door apex-domain certificates on a weekly schedule, with two narrow custom Azure roles. | **Writes a DNS TXT record and refreshes a validation token.** `-DryRun`, allow-list, one record at a time. |
+| [`Remove-Device-By-Device-Id/`](Remove-Device-By-Device-Id) | ✏️ Removes one or many devices from Intune and/or Entra by Device ID, from a Jenkins form with a ticket number. | **Deletes devices.** Input validation, no dry-run. |
+| [`Shared-Mailbox-Permissions/`](Shared-Mailbox-Permissions) | ✏️ Adds or removes FullAccess and SendAs on a shared mailbox from a Jenkins form. | **Changes permissions.** Refuses non-shared mailboxes. |
+| [`Device-Onboarding-Check/`](Device-Onboarding-Check) | 🔍 Weekly report of new devices missing a deployment group or unencrypted. | No tenant changes. |
 
 ## Quick start
 

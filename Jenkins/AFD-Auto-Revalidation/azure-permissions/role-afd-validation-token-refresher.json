@@ -1,0 +1,15 @@
+{
+  "Name": "AFD Validation Token Refresher (Jenkins)",
+  "IsCustom": true,
+  "Description": "Can regenerate the domain-validation token on Azure Front Door custom domains. Nothing else. Used by Jenkins job AFD-Certificate-Auto-Revalidation on the Jenkins server.",
+  "Actions": [
+    "Microsoft.Cdn/profiles/customdomains/read",
+    "Microsoft.Cdn/profiles/customdomains/RefreshValidationToken/action"
+  ],
+  "NotActions": [],
+  "DataActions": [],
+  "NotDataActions": [],
+  "AssignableScopes": [
+    "/subscriptions/YOUR_SUBSCRIPTION_ID"
+  ]
+}

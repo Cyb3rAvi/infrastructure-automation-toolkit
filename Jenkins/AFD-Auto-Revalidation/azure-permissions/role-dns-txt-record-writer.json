@@ -1,0 +1,15 @@
+{
+  "Name": "DNS TXT Record Writer (Jenkins)",
+  "IsCustom": true,
+  "Description": "Can read and update TXT record sets only. Assigned per record set (_dnsauth), never at zone level. Used by Jenkins job AFD-Certificate-Auto-Revalidation on the Jenkins server.",
+  "Actions": [
+    "Microsoft.Network/dnszones/TXT/read",
+    "Microsoft.Network/dnszones/TXT/write"
+  ],
+  "NotActions": [],
+  "DataActions": [],
+  "NotDataActions": [],
+  "AssignableScopes": [
+    "/subscriptions/YOUR_SUBSCRIPTION_ID"
+  ]
+}
