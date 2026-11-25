@@ -41,18 +41,20 @@ Every script is listed with what it can do to your environment, so you know whic
 
 ## Folders
 
-```
-Graph-API/        Microsoft Graph authentication with token caching
-Intune/           Device reporting, BitLocker compliance, readiness, kiosk config, stale cleanup, HP driver update loop fix
-Entra-ID/         Stale device detection, hybrid device inventory
-Exchange/         Mailbox reporting, calendar permissions, distribution lists
-Okta/             User access reporting
-Freshservice/     Ticket details and notes
-Business-Central/ Permission audit with elevated-access flagging
-Monitoring/       Service health, backup status
-Browser-Policy/   Browser homepage enforcement (Intune remediation)
-Jenkins/          Unattended, certificate-based device cleanup
-```
+Each folder has its own README with the problem it solves, how it works, a quick start and warnings.
+
+| Folder | What's in it |
+|--------|--------------|
+| [Graph-API](Graph-API) | Microsoft Graph sign-in with token caching |
+| [Intune](Intune) | Device reporting, BitLocker compliance, readiness, kiosk config, stale cleanup, [HP driver update loop fix](Intune/HP-Driver-Update-Loop) |
+| [Entra-ID](Entra-ID) | Stale device detection, hybrid device inventory |
+| [Exchange](Exchange) | Mailbox reporting, calendar permissions, distribution lists |
+| [Okta](Okta) | User access reporting |
+| [Freshservice](Freshservice) | Ticket details and notes |
+| [Business-Central](Business-Central) | Permission audit with elevated-access flagging |
+| [Monitoring](Monitoring) | Service health, backup status |
+| [Browser-Policy](Browser-Policy) | Browser homepage enforcement (Intune remediation) |
+| [Jenkins](Jenkins) | Unattended, certificate-based device cleanup |
 
 ## Requirements
 
